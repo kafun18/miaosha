@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: miaosha_2
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: kafun
+Built-By: 51311
 Implementation-Vendor-Id: com.imooc
 Build-Jdk: 1.8.0_111
 Implementation-URL: http://maven.apache.org
