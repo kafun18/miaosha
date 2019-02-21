@@ -39,12 +39,16 @@ public class MiaoshaService {
 	@Transactional
 	public OrderInfo miaosha(MiaoshaUser user, GoodsVo goods) {
 		//减库存 下订单 写入秒杀订单
-		goodsService.reduceStock(goods);
+		boolean success = goodsService.reduceStock(goods);
+		if(success){
 		//order_info maiosha_order
 		return orderService.createOrder(user, goods);
+		}else{
+			return null;
+		}
 	}
 
-	/*public long getMiaoshaResult(Long userId, long goodsId) {
+	public long getMiaoshaResult(Long userId, long goodsId) {
 		MiaoshaOrder order = orderService.getMiaoshaOrderByUserIdGoodsId(userId, goodsId);
 		if(order != null) {//秒杀成功
 			return order.getOrderId();
@@ -56,7 +60,7 @@ public class MiaoshaService {
 				return 0;
 			}
 		}
-	}*/
+	}
 
 	private void setGoodsOver(Long goodsId) {
 		redisService.set(MiaoshaKey.isGoodsOver, ""+goodsId, true);

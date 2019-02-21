@@ -24,6 +24,8 @@ public class MQConfig {
 	public static final String HEADERS_EXCHANGE = "headersExchage";
 	public static final String HEADER_QUEUE = "header.queue";
 	
+	public static final String MIAOSHA_QUEUE = "miaosha.queue";
+	
 	/**
 	 * Direct模式，交换机Exchange
 	 * @return
