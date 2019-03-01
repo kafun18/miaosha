@@ -54,7 +54,7 @@ public class MQReceiver {
 	}
 	
 	//监听消息
-	@RabbitListener(queues=MQConfig.QUEUE)
+	/*@RabbitListener(queues=MQConfig.QUEUE)
 	public void receivedirect(String message){
 		log.info("receive message:"+message);
 	}
@@ -72,5 +72,5 @@ public class MQReceiver {
 	@RabbitListener(queues=MQConfig.HEADER_QUEUE)
 	public void receiveHeaderQueue(byte[] message) {
 		log.info(" header  queue message:"+new String(message));
-	}
+	}*/
 }

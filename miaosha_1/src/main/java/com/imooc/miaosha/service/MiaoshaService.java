@@ -44,6 +44,7 @@ public class MiaoshaService {
 		//order_info maiosha_order
 		return orderService.createOrder(user, goods);
 		}else{
+			setGoodsOver(goods.getId());
 			return null;
 		}
 	}

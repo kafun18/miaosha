@@ -28,7 +28,7 @@ public class SampleController {
 	@Autowired
 	MQSender sender;
 	
-	@RequestMapping("/mq/header")
+	/*@RequestMapping("/mq/header")
     @ResponseBody
     public Result<String> header() {
 		sender.sendHeader("hello,imooc");
@@ -54,7 +54,7 @@ public class SampleController {
     public Result<String> mq() {
 		sender.send("hello,imooc");
         return Result.success("Hello，world");
-    }
+    }*/
 	
     @RequestMapping("/hello")
     @ResponseBody
