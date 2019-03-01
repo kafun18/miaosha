@@ -80,9 +80,9 @@ function getMiaoshaResult(goodsId){
 				if(result < 0){
 				layer.msg("对不起，秒杀失败")
 				}else if(result == 0){//继续轮询
-					setTimeout(function({
+					setTimeout(function(){
 						getMiaoshaResult(goodsId);
-					},50));
+					},200000);
 					
 				}else{
 					layer.confirm("恭喜你，秒杀成功！查看订单",{btn:["确定","取消"]},
@@ -112,8 +112,7 @@ function doMiaosha(){
 		},
 	    success:function(data){
 			if(data.code==0){
-				//window.location.href="/order/detail?orderId="+data.data.id;
-				
+				//window.location.href="/order/detail?orderId="+data.data.id;				
 				getMiaoshaResult($('#goodsId').val());
 			}else{
 				layer.msg(data.msg);

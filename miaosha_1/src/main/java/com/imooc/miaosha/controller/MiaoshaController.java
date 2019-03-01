@@ -2,8 +2,7 @@ package com.imooc.miaosha.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +71,7 @@ public class MiaoshaController implements InitializingBean{
 		}
 		for(GoodsVo goods : goodsList) {
 			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), goods.getStockCount());
-			//localOverMap.put(goods.getId(), false);
+			localOverMap.put(goods.getId(), false);
 		}
 		
 	}
@@ -85,11 +84,16 @@ public class MiaoshaController implements InitializingBean{
 		if(user==null){
 			return Result.error(CodeMsg.SESSION_ERROR);
 		}
+        //内存标记，减少redis访问
+		boolean over = localOverMap.get(goodsId);
+		if(over){
+			return Result.error(CodeMsg.MIAO_SHA_OVER);
+		}
 		    	
     	//预减库存
     	long stock = redisService.decr(GoodsKey.getMiaoshaGoodsStock, ""+goodsId);//10
     	if(stock < 0) {
-    		 //localOverMap.put(goodsId, true);
+    		 localOverMap.put(goodsId, true);
     		return Result.error(CodeMsg.MIAO_SHA_OVER);
     	}
     	//判断是否已经秒杀到了
