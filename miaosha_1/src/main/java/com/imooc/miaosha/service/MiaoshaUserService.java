@@ -78,7 +78,7 @@ public class MiaoshaUserService {
 
 	public Boolean login(HttpServletResponse response, LoginVo loginVo) {
 		if(loginVo == null) {
-			//throw new GlobalException(CodeMsg.SERVER_ERROR);
+			throw new GlobalException(CodeMsg.SERVER_ERROR);
 		}
 		String mobile = loginVo.getMobile();
 		String formPass = loginVo.getPassword();

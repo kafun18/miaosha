@@ -34,6 +34,8 @@ import com.imooc.miaosha.service.GoodsService;
 import com.imooc.miaosha.service.MiaoshaService;
 import com.imooc.miaosha.service.MiaoshaUserService;
 import com.imooc.miaosha.service.OrderService;
+import com.imooc.miaosha.util.MD5Util;
+import com.imooc.miaosha.util.UUIDUtil;
 import com.imooc.miaosha.vo.GoodsVo;
 
 @Controller
@@ -76,15 +78,21 @@ public class MiaoshaController implements InitializingBean{
 		
 	}
 	
-	@RequestMapping(value="/do_miaosha",method=RequestMethod.POST)
+	@RequestMapping(value="/{path}/do_miaosha",method=RequestMethod.POST)
 	@ResponseBody
 	public Result<Integer> list(Model model,MiaoshaUser user,
-			@RequestParam("goodsId")long goodsId){
+			@RequestParam("goodsId")long goodsId,
+			@PathVariable("path")String path){
 		model.addAttribute("user", user);
 		if(user==null){
 			return Result.error(CodeMsg.SESSION_ERROR);
 		}
-        //内存标记，减少redis访问
+		//验证
+		boolean check = miaoshaService.checkPath(user, goodsId, path);
+        if(!check){
+        	return Result.error(CodeMsg.REQUEST_ILLEGAL);
+        }
+		//内存标记，减少redis访问
 		boolean over = localOverMap.get(goodsId);
 		if(over){
 			return Result.error(CodeMsg.MIAO_SHA_OVER);
@@ -145,6 +153,21 @@ public class MiaoshaController implements InitializingBean{
     	}
     	long result  =miaoshaService.getMiaoshaResult(user.getId(), goodsId);
     	return Result.success(result);
+    }
+    
+    @RequestMapping(value="/path",method=RequestMethod.GET)
+	@ResponseBody
+	public Result<String> getMiaoshaPath(Model model,MiaoshaUser user,
+			@RequestParam("goodsId")long goodsId){
+		model.addAttribute("user", user);
+		if(user==null){
+			return Result.error(CodeMsg.SESSION_ERROR);
+		}
+		String path = miaoshaService.createMiaoshaPath(user, goodsId);
+		//String str = MD5Util.md5(UUIDUtil.uuid()+"123456");
+		//redisService.set(MiaoshaKey.getMiaoshaPath, ""+user.getId()+"_"+goodsId, str);
+		return Result.success(path);
+        
     }
 	
 	@RequestMapping(value="/do_miaosha1",produces="text/html")
