@@ -71,10 +71,10 @@ public class MiaoshaService {
 		return redisService.exists(MiaoshaKey.isGoodsOver, ""+goodsId);
 	}
 	
-	/*public void reset(List<GoodsVo> goodsList) {
+	public void reset(List<GoodsVo> goodsList) {
 		goodsService.resetStock(goodsList);
 		orderService.deleteOrders();
-	}*/
+	}
 
 	public boolean checkPath(MiaoshaUser user, long goodsId, String path) {
 		if(user == null || path == null) {

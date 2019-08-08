@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.imooc.miaosha.redis.OrderKey;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -197,6 +198,21 @@ public class MiaoshaController implements InitializingBean{
 		model.addAttribute("goods", goods);
 		return "order_detail";
 		
-	}	
+	}
+
+	@RequestMapping(value="/reset", method=RequestMethod.GET)
+	@ResponseBody
+	public Result<Boolean> reset(Model model) {
+		List<GoodsVo> goodsList = goodsService.listGoodsVo();
+		for(GoodsVo goods : goodsList) {
+			goods.setStockCount(10);
+			redisService.set(GoodsKey.getMiaoshaGoodsStock, ""+goods.getId(), 10);
+			localOverMap.put(goods.getId(), false);
+		}
+		redisService.delete(OrderKey.getMiaoshaOrderByUidGid);
+		redisService.delete(MiaoshaKey.isGoodsOver);
+		miaoshaService.reset(goodsList);
+		return Result.success(true);
+	}
 		
 }
