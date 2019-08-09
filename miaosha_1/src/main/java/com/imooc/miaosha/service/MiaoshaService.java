@@ -165,4 +165,8 @@ public class MiaoshaService {
 		String exp = ""+ num1 + op1 + num2 + op2 + num3;
 		return exp;
 	}
+
+	public static void main(String[] args) {
+		System.out.println(calc("1+8/2"));
+	}
 }
